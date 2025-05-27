@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ES2024"
+    ],
+    "module": "nodenext",
+    "target": "ES2024",
+    "baseUrl": "./",
+    "outDir": "./build"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./build",
+    "./node_modules",
+  ]
+}
