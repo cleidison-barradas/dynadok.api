@@ -8,6 +8,8 @@ export class DeleteUserController extends Controller {
   ): Promise<HttpResponse> {
     const usecase = makeDeleteUserUseCase();
 
-    return usecase.execute(httpRequest.params.id);
+    const { id } = httpRequest.params;
+
+    return usecase.execute(id);
   }
 }

@@ -11,7 +11,7 @@ export class CreateUserUseCase {
       email: data.email,
       name: data.name,
       phone: data.phone,
-      salt,
+      salt: salt,
       password: encryptedPassword,
     });
   }

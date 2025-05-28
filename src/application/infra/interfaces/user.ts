@@ -12,10 +12,10 @@ export interface IUser {
 
 export type CreateUserDTO = Pick<
   IUser,
-  "name" | "email" | "password" | "phone"
+  "name" | "email" | "password" | "phone" | "salt"
 >;
 
-export type UpdateUserDTO = Pick<IUser, "name" | "phone"> & { id: string };
+export type UpdateUserDTO = Pick<IUser, "name" | "phone">;
 
 export type QueryUserDTO = {
   email?: string;
