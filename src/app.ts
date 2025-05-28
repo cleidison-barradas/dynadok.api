@@ -1,11 +1,14 @@
-import express, { Application } from "express";
+import express, { Application, Router } from "express";
 import PinoHttp from "pino-http";
+import path from "node:path";
 import cors from "cors";
 
 import { logger, serializers } from "./application/lib";
+import routes from "./application/infra/routes";
+const appRouter = Router();
 
 type AppConfig = {
-  port?: number;
+  port: number;
 };
 
 export class App {
@@ -32,13 +35,21 @@ export class App {
     return this.app;
   }
 
-  public async start() {
-    this.app.listen(this.port, () => {
+  public async startServer() {
+    return this.app.listen(this.port, () => {
       logger.info(`Server running on port: ${this.port}`);
     });
   }
 
-  private initRoutes() {}
+  private initRoutes() {
+    Object.keys(routes).forEach((key) => {
+      const _route = routes[key];
+
+      appRouter.use(path.join("/", key), _route);
+    });
+
+    this.app.use("/api", appRouter);
+  }
 
   private initMiddlewares() {}
 

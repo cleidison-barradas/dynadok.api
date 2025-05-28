@@ -6,7 +6,13 @@
     "module": "nodenext",
     "target": "ES2024",
     "baseUrl": "./",
-    "outDir": "./build"
+    "outDir": "./build",
+    "isolatedModules": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "./src/**/*.ts"
@@ -14,5 +20,5 @@
   "exclude": [
     "./build",
     "./node_modules",
-  ]
+  ],
 }
