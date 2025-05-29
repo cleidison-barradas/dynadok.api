@@ -13,11 +13,18 @@ import {
   UpdateUserDTO,
 } from "@/application/infra/interfaces";
 
+import { Model } from "mongoose";
+
 export class UserMongoRepository extends Repository {
+  private model: Model<IUser>;
+  constructor() {
+    super();
+
+    this.model = UserModel._getModel();
+  }
   async createOne(data: IUser): Promise<TResult<IUser>> {
     try {
-      const model = UserModel._getModel();
-      const result = await model.create(data);
+      const result = await this.model.create(data);
 
       return resultOk(result);
     } catch (error) {
@@ -26,8 +33,7 @@ export class UserMongoRepository extends Repository {
   }
   async findById(id: string): Promise<TResult<IUser>> {
     try {
-      const model = UserModel._getModel();
-      const result = await model.findById(id);
+      const result = await this.model.findById(id);
 
       return resultOk(result);
     } catch (error) {
@@ -36,8 +42,7 @@ export class UserMongoRepository extends Repository {
   }
   async listAll(params: QueryUserDTO): Promise<TResult<IUser[]>> {
     try {
-      const model = UserModel._getModel();
-      const result = await model.find(params);
+      const result = await this.model.find(params);
 
       return resultOk(result);
     } catch (error) {
@@ -47,15 +52,14 @@ export class UserMongoRepository extends Repository {
 
   async updateOne(id: string, data: UpdateUserDTO): Promise<TResult<IUser>> {
     try {
-      const model = UserModel._getModel();
-      let result = await model.findById(id);
+      let result = await this.model.findById(id);
 
       if (!result) {
         throw new NotFoundError("User not found");
       }
       await result.updateOne(data);
 
-      result = await model.findById(id);
+      result = await this.model.findById(id);
 
       return resultOk(result);
     } catch (error) {
@@ -65,8 +69,7 @@ export class UserMongoRepository extends Repository {
 
   async deleteOne(id: string): Promise<TResult<string>> {
     try {
-      const model = UserModel._getModel();
-      const result = await model.findById(id);
+      const result = await this.model.findById(id);
 
       if (!result) {
         throw new NotFoundError("User not found");
@@ -75,6 +78,16 @@ export class UserMongoRepository extends Repository {
       await result.deleteOne();
 
       return resultOk(id);
+    } catch (error) {
+      return CommonInternalErrorHandler.handle(error);
+    }
+  }
+
+  async findByEmail(email: string): Promise<TResult<IUser>> {
+    try {
+      const result = await this.model.findOne({ email });
+
+      return resultOk(result);
     } catch (error) {
       return CommonInternalErrorHandler.handle(error);
     }

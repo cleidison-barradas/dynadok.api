@@ -1,12 +1,10 @@
-version: "3.8"
-
 services:
   mongodb:
     image: mongo:latest
     restart: always
     container_name: mongodb
     networks:
-      - mongo_network
+      - dynadok_network
     ports:
       - ${MONGO_INITDB_PORT}:${MONGO_INITDB_PORT}
     volumes:
@@ -16,10 +14,28 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
 
+  redis-cache:
+    image: redis:alpine
+    container_name: redis-cache
+    command:
+      [
+        "redis-server",
+        "--appendonly",
+        "yes",
+        "--requirepass",
+        "${REDIS_PASSWORD}",
+      ]
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - dynadok_network
+    volumes:
+      - data:/data
+
 networks:
-  mongo_network:
+  dynadok_network:
     driver: bridge
-    name: mongo_network
+    name: dynadok_network
 
 volumes:
   data:

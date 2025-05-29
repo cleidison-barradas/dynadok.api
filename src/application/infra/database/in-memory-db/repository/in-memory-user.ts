@@ -7,21 +7,12 @@ import {
   CreateUserDTO,
   UpdateUserDTO,
 } from "@/application/infra/interfaces";
-import {
-  BadRequestError,
-  CommonInternalErrorHandler,
-  NotFoundError,
-} from "@/application/errors";
+import { CommonInternalErrorHandler } from "@/application/errors";
 
 export class InMemoryUserRepository extends Repository {
   private users: IUser[] = [];
   async createOne(data: CreateUserDTO): Promise<TResult<IUser>> {
     try {
-      const user = this.users.find((user) => user.email === data.email);
-
-      if (user) {
-        throw new BadRequestError("User already exists");
-      }
       return new Promise((resolve) => {
         this.users.push({
           ...data,
@@ -39,10 +30,6 @@ export class InMemoryUserRepository extends Repository {
     try {
       const index = this.users.findIndex((user) => user._id === id);
 
-      if (index === -1) {
-        throw new NotFoundError("User not found");
-      }
-
       return new Promise((resolve) => {
         resolve(resultOk(this.users[index]));
       });
@@ -53,10 +40,6 @@ export class InMemoryUserRepository extends Repository {
   async deleteOne(id: string): Promise<TResult<string>> {
     try {
       const index = this.users.findIndex((user) => user._id === id);
-
-      if (index === -1) {
-        throw new NotFoundError("User not found");
-      }
 
       return new Promise((resolve) => {
         this.users.splice(index, 1);
@@ -75,10 +58,6 @@ export class InMemoryUserRepository extends Repository {
     try {
       const index = this.users.findIndex((user) => user._id === id);
 
-      if (index === -1) {
-        throw new NotFoundError("User not found");
-      }
-
       const user = this.users[index];
 
       return new Promise((resolve) => {
@@ -91,5 +70,12 @@ export class InMemoryUserRepository extends Repository {
     } catch (error) {
       return CommonInternalErrorHandler.handle(error);
     }
+  }
+
+  async findByEmail(email: string): Promise<TResult<IUser>> {
+    return new Promise((resolve) => {
+      const user = this.users.find((user) => user.email === email);
+      resolve(resultOk(user));
+    });
   }
 }

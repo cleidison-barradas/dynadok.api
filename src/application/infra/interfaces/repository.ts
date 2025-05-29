@@ -7,4 +7,5 @@ export abstract class Repository {
   abstract deleteOne(id: string): Promise<TResult<string>>;
   abstract listAll(params?: QueryUserDTO): Promise<TResult<IUser[]>>;
   abstract updateOne(id: string, data: UpdateUserDTO): Promise<TResult<IUser>>;
+  abstract findByEmail(email: string): Promise<TResult<IUser>>;
 }

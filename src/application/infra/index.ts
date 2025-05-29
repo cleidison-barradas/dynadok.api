@@ -1,3 +1,3 @@
 export * from "./database";
 export * from "./interfaces";
-export * from "./routes";
+export * from "./cache";

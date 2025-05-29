@@ -1,8 +1,9 @@
+import { faker } from "@faker-js/faker";
 import { InMemoryUserRepository } from "@/application/infra/database";
 import { CreateUserUseCase } from "./create-user.usecase";
 import { TResult } from "@/application/helpers/result";
+import { BadRequestError } from "../errors";
 import { IUser } from "../infra";
-import { faker } from "@faker-js/faker";
 
 describe("CreateUserUseCase", () => {
   let userMock: IUser | null = null;
@@ -43,9 +44,11 @@ describe("CreateUserUseCase", () => {
   it("Should not be able to create na new user it the same email", async () => {
     await repository.createOne(userMock);
 
-    const response = (await usecase.execute(userMock)) as TResult<IUser>;
-
-    expect(response.success).toBe(false);
-    expect(response.code).toBe(400);
+    try {
+      await usecase.execute(userMock);
+    } catch (error) {
+      expect(error).toBeInstanceOf(BadRequestError);
+      expect(error.message).toBe("User already exists");
+    }
   });
 });

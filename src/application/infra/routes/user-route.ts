@@ -8,13 +8,17 @@ import {
   ListUsersController,
   UpdateController,
 } from "@/application/controllers";
+import { redisConfig } from "@/config/redis-config";
+import { RedisCache } from "../cache";
 
 const router = Router();
 
-router.post("/", adapterRoute(new CreateUserController()));
-router.get("/", adapterRoute(new ListUsersController()));
-router.put("/:id", adapterRoute(new UpdateController()));
-router.delete("/:id", adapterRoute(new DeleteUserController()));
-router.get("/:id", adapterRoute(new FindUserByIdController()));
+const cacheService = new RedisCache(redisConfig);
+
+router.post("/", adapterRoute(new CreateUserController(cacheService)));
+router.get("/", adapterRoute(new ListUsersController(cacheService)));
+router.put("/:id", adapterRoute(new UpdateController(cacheService)));
+router.delete("/:id", adapterRoute(new DeleteUserController(cacheService)));
+router.get("/:id", adapterRoute(new FindUserByIdController(cacheService)));
 
 export default router;

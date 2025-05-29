@@ -7,7 +7,7 @@
     "start": "TS_NODE_BASEURL=./build node -r tsconfig-paths/register build/src/index.js",
     "start:dev": "NODE_ENV=development tsx watch src/index.ts",
     "lint:fix": "eslint . --fix --ext .ts --ignore-pattern 'build' --ignore-pattern 'node_modules'",
-    "test": "jest"
+    "test": "jest --passWithNoTests --silent --forceExit --detectOpenHandles --noStackTrace --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +39,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "ioredis": "^5.6.1",
     "js-sha1": "^0.7.0",
     "mongoose": "^8.15.1",
     "pino": "^9.7.0",

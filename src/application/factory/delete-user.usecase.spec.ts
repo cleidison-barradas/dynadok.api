@@ -42,11 +42,11 @@ describe("DeleteUserUseCase Test Suite", () => {
   });
 
   it("Should not be able to delete user with invalid id", async () => {
-    const response = (await usecase.execute(
-      faker.string.uuid(),
-    )) as TResult<IUser>;
-
-    expect(response.success).toBe(false);
-    expect(response.code).toBe(404);
+    try {
+      await usecase.execute(faker.string.uuid());
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toBe("User not found");
+    }
   });
 });
