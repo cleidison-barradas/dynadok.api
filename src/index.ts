@@ -1,14 +1,21 @@
 import "dotenv/config";
 import { App } from "./app";
 import { logger } from "./application/lib";
-import { MongoDB } from "./application/infra";
+import {
+  MongoDB,
+  emailConsumer,
+  consumeQueueMessages,
+} from "./application/infra";
 import { httpConfig, mongoConfig } from "./config";
 
-export default (async () => {
+(async () => {
   const mongo = new MongoDB(mongoConfig);
   const app = new App(httpConfig);
 
   const connection = await mongo.connect();
+
+  await consumeQueueMessages([emailConsumer]);
+
   const server = await app.startServer();
 
   process.on("SIGINT", gracefulShutdown);

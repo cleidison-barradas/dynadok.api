@@ -8,4 +8,8 @@ export abstract class Repository {
   abstract listAll(params?: QueryUserDTO): Promise<TResult<IUser[]>>;
   abstract updateOne(id: string, data: UpdateUserDTO): Promise<TResult<IUser>>;
   abstract findByEmail(email: string): Promise<TResult<IUser>>;
+  abstract setSendMailAt(
+    id: string,
+    emailVerifiedAt: Date,
+  ): Promise<TResult<IUser>>;
 }

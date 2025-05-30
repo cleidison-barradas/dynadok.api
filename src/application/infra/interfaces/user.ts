@@ -7,7 +7,7 @@ export interface IUser {
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-  unsubscribedAt?: Date;
+  emailVerifiedAt?: Date;
 }
 
 export type CreateUserDTO = Pick<

@@ -17,6 +17,7 @@ import { Model } from "mongoose";
 
 export class UserMongoRepository extends Repository {
   private model: Model<IUser>;
+
   constructor() {
     super();
 
@@ -88,6 +89,23 @@ export class UserMongoRepository extends Repository {
       const result = await this.model.findOne({ email });
 
       return resultOk(result);
+    } catch (error) {
+      return CommonInternalErrorHandler.handle(error);
+    }
+  }
+
+  async setSendMailAt(
+    id: string,
+    emailVerifiedAt?: Date,
+  ): Promise<TResult<IUser>> {
+    try {
+      let user = await this.model.findById(id);
+
+      await user.updateOne({ emailVerifiedAt });
+
+      user = await this.model.findById(id);
+
+      return resultOk(user);
     } catch (error) {
       return CommonInternalErrorHandler.handle(error);
     }

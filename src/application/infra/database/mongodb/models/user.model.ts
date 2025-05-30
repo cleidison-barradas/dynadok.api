@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 import { MongoBaseModel } from "../mongo-base-model";
-import { IUser } from "src/application/infra/interfaces";
+import { IUser } from "@/application/infra/interfaces";
 
 class UserModel extends MongoBaseModel<IUser> {
   constructor() {
@@ -14,7 +14,7 @@ class UserModel extends MongoBaseModel<IUser> {
       password: { type: String, required: true },
       salt: { type: String, required: true },
       phone: { type: String, required: true },
-      unsubscribedAt: { type: Date, default: null },
+      emailVerifiedAt: { type: Date, default: null },
     });
 
     this._schemaDefinition.set("timestamps", true);

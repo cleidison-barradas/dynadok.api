@@ -78,4 +78,25 @@ export class InMemoryUserRepository extends Repository {
       resolve(resultOk(user));
     });
   }
+
+  async setSendMailAt(
+    id: string,
+    emailVerifiedAt: Date,
+  ): Promise<TResult<IUser>> {
+    try {
+      const index = this.users.findIndex((user) => user._id === id);
+
+      return new Promise((resolve) => {
+        const user = this.users[index];
+        this.users[index] = {
+          ...user,
+          emailVerifiedAt,
+        };
+
+        resolve(resultOk(this.users[index]));
+      });
+    } catch (error) {
+      return CommonInternalErrorHandler.handle(error);
+    }
+  }
 }

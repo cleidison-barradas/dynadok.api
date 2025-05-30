@@ -27,11 +27,10 @@ export class App {
 
   private init() {
     this.initPlugins();
-    this.initMiddlewares();
     this.initRoutes();
   }
 
-  public getSever() {
+  public getServer() {
     return this.app;
   }
 
@@ -50,8 +49,6 @@ export class App {
 
     this.app.use("/api", appRouter);
   }
-
-  private initMiddlewares() {}
 
   private initPlugins() {
     this.app.use(
