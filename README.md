@@ -31,6 +31,9 @@ docker-compose up -d
 npm run start:dev
 # ou
 yarn start:dev
+
+# Para executar os testes:
+npm run test
 ```
 
 6. **Acesse a aplicação:**
